@@ -3,8 +3,8 @@ import { Language } from '../types';
 import { EDUCATION_MODULES, GLOSSARY } from '../constants';
 import { ArrowRight, Lightbulb, AlertTriangle, BookOpen, Play, Check, Globe, Cpu, Database, MessageSquare, Server } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import InteractiveDemo from './InteractiveDemo';
 
-// DODANO: onNavigateToContact do interfejsu
 interface EducationProps {
   lang: Language;
   onNavigateToContact: () => void;
@@ -237,7 +237,6 @@ const AutomationSimulator = ({ lang }: { lang: Language }) => {
   );
 };
 
-// DODANO: destrukturyzację propsa onNavigateToContact
 const Education: React.FC<EducationProps> = ({ lang, onNavigateToContact }) => {
   return (
     <div className="bg-slate-950 min-h-screen pt-32 pb-20">
@@ -264,36 +263,24 @@ const Education: React.FC<EducationProps> = ({ lang, onNavigateToContact }) => {
         </div>
 
         <div className="mb-24">
-          <div className="flex items-center gap-3 mb-8">
-            <AlertTriangle className="text-amber-500 w-6 h-6" />
-            <h2 className="text-2xl font-bold text-white">
-              {lang === 'pl' ? 'Czy Twoja firma ma te objawy?' : 'Does your company have these symptoms?'}
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { pl: "Pracownicy kopiują i wklejają dane między oknami.", en: "Employees copy-paste data between windows." },
-              { pl: "Faktury i dokumenty giną w mailach.", en: "Invoices and documents get lost in emails." },
-              { pl: "Raporty powstają ręcznie w Excelu przez wiele godzin.", en: "Reports are created manually in Excel for hours." },
-              { pl: "Klient czeka na odpowiedź dłużej niż 2 godziny.", en: "Client waits for a reply longer than 2 hours." },
-              { pl: "Wdrażanie nowego pracownika trwa tygodnie.", en: "Onboarding a new employee takes weeks." },
-              { pl: "Brak jednego źródła prawdy o stanie firmy.", en: "No single source of truth about company status." }
-            ].map((symptom, idx) => (
-              <div key={idx} className="bg-slate-900/50 border border-white/5 p-6 rounded-xl flex items-start gap-4 hover:border-amber-500/30 transition-colors">
-                <div className="w-2 h-2 mt-2 rounded-full bg-amber-500 shrink-0" />
-                <p className="text-slate-300 font-medium">{symptom[lang]}</p>
-              </div>
-            ))}
-          </div>
+            <div className="text-center mb-10">
+                <h2 className="text-2xl md:text-3xl font-heading font-bold text-white mb-4">
+                {lang === 'pl' ? 'Przykład 1: Automatyczne Przetwarzanie Faktury' : 'Example 1: Automated Invoice Processing'}
+                </h2>
+                <p className="text-slate-400 max-w-2xl mx-auto">
+                {lang === 'pl' ? 'Zamiast ręcznie przepisywać dane, upuść plik i zobacz, jak system robi to za Ciebie w kilka sekund.' : 'Instead of manual data entry, drop a file and watch the system do it for you in seconds.'}
+                </p>
+            </div>
+            <InteractiveDemo />
         </div>
 
         <div className="mb-24">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-heading font-bold text-white mb-4">
-              {lang === 'pl' ? 'Jak to działa "pod maską"?' : 'How it works "under the hood"?'}
+              {lang === 'pl' ? 'Przykład 2: Jak działa automatyzacja "pod maską"?' : 'Example 2: How automation works "under the hood"?'}
             </h2>
             <p className="text-slate-400">
-              {lang === 'pl' ? 'Zobacz, jak dane przepływają między systemami bez udziału człowieka.' : 'See how data flows between systems without human intervention.'}
+              {lang === 'pl' ? 'Zobacz, jak dane przepływają między systemami bez udziału człowieka po otrzymaniu zapytania z formularza.' : 'See how data flows between systems without human intervention after a form submission.'}
             </p>
           </div>
           <AutomationSimulator lang={lang} />
@@ -380,9 +367,6 @@ const Education: React.FC<EducationProps> = ({ lang, onNavigateToContact }) => {
                 : 'Knowledge is the first step. Action is the second. You don\'t have to do it alone.'}
             </p>
             
-            {/* 
-              POWRÓT DO BUTTONA I UŻYCIE PROPSA onNavigateToContact
-            */}
             <button
               onClick={onNavigateToContact}
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:bg-blue-50 transition-colors cursor-pointer relative z-50"
