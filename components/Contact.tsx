@@ -10,6 +10,21 @@ interface ContactProps {
 const Contact: React.FC<ContactProps> = ({ lang }) => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
+  const fireLeadEvents = () => {
+    const gtag = (window as typeof window & { gtag?: (...args: any[]) => void }).gtag;
+    if (typeof gtag !== 'function') return;
+
+    gtag('event', 'generate_lead', {
+      form_id: 'mgvgznka',
+      page_path: window.location.pathname,
+    });
+
+    gtag('event', 'ads_conversion_SUBMIT_LEAD_FORM_1', {
+      form_id: 'mgvgznka',
+      page_path: window.location.pathname,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('submitting');
@@ -28,6 +43,7 @@ const Contact: React.FC<ContactProps> = ({ lang }) => {
 
       if (response.ok) {
         setStatus('success');
+        fireLeadEvents();
         form.reset();
       } else {
         setStatus('error');
