@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Language } from '../types';
 import { Calculator, DollarSign, Clock, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ROUTES } from '../routes';
 
 interface ROICalculatorProps {
   lang: Language;
@@ -135,9 +137,12 @@ const ROICalculator: React.FC<ROICalculatorProps> = ({ lang }) => {
                 </div>
 
                 <div className="text-center">
-                   <a href="#contact" className="text-sm text-slate-400 hover:text-white underline decoration-blue-500 decoration-2 underline-offset-4">
-                     {lang === 'pl' ? 'Zróbmy audyt i potwierdźmy te liczby' : 'Let\'s audit and confirm these numbers'}
-                   </a>
+                  <Link
+                    to={ROUTES.contact}
+                    className="text-sm text-slate-400 hover:text-white underline decoration-blue-500 decoration-2 underline-offset-4"
+                  >
+                    {lang === 'pl' ? 'Zróbmy audyt i potwierdźmy te liczby' : 'Let\'s audit and confirm these numbers'}
+                  </Link>
                 </div>
               </div>
             </div>

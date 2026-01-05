@@ -11,7 +11,6 @@ export interface BilingualText {
 export interface NavItem {
   label: BilingualText;
   href: string;
-  isPage?: boolean;
 }
 
 export interface Feature {

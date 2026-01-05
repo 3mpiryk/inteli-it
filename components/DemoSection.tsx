@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Language } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Sparkles, ArrowRight } from 'lucide-react';
+import { ROUTES } from '../routes';
 
 interface DemoSectionProps {
   lang: Language;
@@ -206,10 +208,13 @@ const DemoSection: React.FC<DemoSectionProps> = ({ lang }) => {
                             <button onClick={reset} className="px-4 py-2 text-sm text-slate-400 hover:text-white transition-colors">
                               {lang === 'pl' ? 'Sprawdź inne' : 'Check other'}
                             </button>
-                            <a href="#contact" className="px-6 py-2 bg-white text-slate-900 rounded-lg font-bold text-sm hover:bg-blue-50 flex items-center gap-2">
+                            <Link
+                              to={ROUTES.contact}
+                              className="px-6 py-2 bg-white text-slate-900 rounded-lg font-bold text-sm hover:bg-blue-50 flex items-center gap-2"
+                            >
                               {lang === 'pl' ? 'Wdróż to u mnie' : 'Implement this'}
                               <ArrowRight className="w-4 h-4" />
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       )}

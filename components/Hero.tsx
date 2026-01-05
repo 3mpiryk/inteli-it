@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, PlayCircle, Cloud, Laptop, Database, Activity, CheckCircle2, Zap } from 'lucide-react';
 import { Language } from '../types';
 import { HERO_CONTENT, HERO_STATS } from '../constants';
+import { ROUTES } from '../routes';
 
 interface HeroProps {
   lang: Language;
@@ -149,20 +151,20 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <a 
-                href="#contact"
+              <Link
+                to={ROUTES.contact}
                 className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold text-lg transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 group hover:scale-105"
               >
                 {HERO_CONTENT.ctaPrimary[lang]}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a 
-                href="#demo"
+              </Link>
+              <Link
+                to={ROUTES.demo}
                 className="w-full sm:w-auto px-8 py-4 glass-card hover:bg-white/10 text-white rounded-lg font-bold text-lg transition-all flex items-center justify-center gap-2 hover:scale-105"
               >
                 <PlayCircle className="w-5 h-5 text-emerald-400" />
                 {HERO_CONTENT.ctaSecondary[lang]}
-              </a>
+              </Link>
             </div>
           </div>
 

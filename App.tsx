@@ -1,32 +1,31 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { Language } from './types';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import ROICalculator from './components/ROICalculator';
-import { Loader2 } from 'lucide-react';
+import HomePage from './pages/HomePage';
+import { HOME_SECTIONS, ROUTES } from './routes';
+import { applySeo } from './seo';
 
-// Lazy load
-const DemoSection = React.lazy(() => import('./components/DemoSection'));
-const Process = React.lazy(() => import('./components/Process'));
-const CaseStudies = React.lazy(() => import('./components/CaseStudies'));
-const TechStack = React.lazy(() => import('./components/TechStack'));
-const Testimonials = React.lazy(() => import('./components/Testimonials'));
-const FAQ = React.lazy(() => import('./components/FAQ'));
-const Contact = React.lazy(() => import('./components/Contact'));
-const Footer = React.lazy(() => import('./components/Footer'));
-const Chatbot = React.lazy(() => import('./components/Chatbot'));
-const WhyUs = React.lazy(() => import('./components/WhyUs'));
 const Education = React.lazy(() => import('./components/Education'));
 const Login = React.lazy(() => import('./components/Login'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
 const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
+const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
+const Footer = React.lazy(() => import('./components/Footer'));
+const Chatbot = React.lazy(() => import('./components/Chatbot'));
 
 interface UserData {
   email: string;
   company: string | null;
   isAdmin?: boolean;
 }
+
+const LoadingFallback = () => (
+  <div className="py-20 flex justify-center items-center min-h-[50vh]">
+    <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+  </div>
+);
 
 function App() {
   const [lang, setLang] = useState<Language>(() => {
@@ -37,114 +36,105 @@ function App() {
     return 'en';
   });
 
-  const [view, setView] = useState<'home' | 'education' | 'login' | 'dashboard' | 'reset'>('home');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<UserData | null>(null);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('view') === 'reset') {
-      setView('reset');
+    const params = new URLSearchParams(location.search);
+    if (location.pathname === ROUTES.home && params.get('view') === 'reset') {
+      params.delete('view');
+      const rest = params.toString();
+      navigate(`${ROUTES.reset}${rest ? `?${rest}` : ''}`, { replace: true });
     }
-  }, []);
+  }, [location.pathname, location.search, navigate]);
 
-  const handleNavigate = (newView: 'home' | 'education' | 'login' | 'dashboard') => {
-    if (newView === 'dashboard' && !isAuthenticated) {
-      setView('login');
-    } else {
-      setView(newView);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  // TO JEST NOWA FUNKCJA KTÓRA NAPRAWIA PROBLEM
-  const handleNavigateToContact = () => {
-    // 1. Zmieniamy widok na stronę główną
-    setView('home');
-    
-    // 2. Czekamy chwilę aż React przerysuje widok i załaduje sekcję Contact
-    setTimeout(() => {
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 300); // 300ms opóźnienia, żeby zdążyło się wyrenderować
-  };
+  useEffect(() => {
+    applySeo(location.pathname, lang);
+  }, [location.pathname, lang]);
 
   const handleLogin = (userData: UserData) => {
     setUser(userData);
     setIsAuthenticated(true);
-    setView('dashboard');
+    navigate(ROUTES.dashboard);
   };
 
   const handleLogout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    setView('home');
+    navigate(ROUTES.home);
   };
 
-  const LoadingFallback = () => (
-    <div className="py-20 flex justify-center items-center min-h-[50vh]">
-      <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-    </div>
-  );
+  const hideFooter =
+    location.pathname.startsWith(ROUTES.dashboard) ||
+    location.pathname.startsWith(ROUTES.login) ||
+    location.pathname.startsWith(ROUTES.reset);
 
   return (
     <div className="min-h-screen font-sans text-slate-100 selection:bg-blue-500 selection:text-white">
-      <Header 
-        lang={lang} 
-        setLang={setLang} 
-        currentView={view === 'reset' ? 'home' : view} 
-        onNavigate={handleNavigate}
+      <Header
+        lang={lang}
+        setLang={setLang}
         isAuthenticated={isAuthenticated}
       />
-      
+
       <main>
-        {view === 'home' && (
-          <>
-            <Hero lang={lang} />
-            <Services lang={lang} />
-            <ROICalculator lang={lang} />
-            <Suspense fallback={<LoadingFallback />}>
-              <WhyUs lang={lang} />
-              <DemoSection lang={lang} />
-              <Process lang={lang} />
-              <CaseStudies lang={lang} />
-              <TechStack lang={lang} />
-              <Testimonials lang={lang} />
-              <FAQ lang={lang} />
-              <Contact lang={lang} />
-            </Suspense>
-          </>
-        )}
-
-        {view === 'education' && (
-          <Suspense fallback={<LoadingFallback />}>
-            {/* PRZEKAZUJEMY NOWĄ FUNKCJĘ DO KOMPONENTU */}
-            <Education lang={lang} onNavigateToContact={handleNavigateToContact} />
-          </Suspense>
-        )}
-
-        {view === 'login' && (
-           <Suspense fallback={<LoadingFallback />}>
-              <Login lang={lang} onLogin={handleLogin} />
-           </Suspense>
-        )}
-
-        {view === 'reset' && (
-           <Suspense fallback={<LoadingFallback />}>
-              <ResetPassword lang={lang} onSuccess={() => setView('login')} />
-           </Suspense>
-        )}
-
-        {view === 'dashboard' && isAuthenticated && user && (
-           <Suspense fallback={<LoadingFallback />}>
-              <Dashboard lang={lang} onLogout={handleLogout} userData={user} />
-           </Suspense>
-        )}
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route path={ROUTES.home} element={<HomePage lang={lang} />} />
+            <Route
+              path={ROUTES.services}
+              element={<HomePage lang={lang} initialSectionId={HOME_SECTIONS.services} />}
+            />
+            <Route
+              path={ROUTES.process}
+              element={<HomePage lang={lang} initialSectionId={HOME_SECTIONS.process} />}
+            />
+            <Route
+              path={ROUTES.demo}
+              element={<HomePage lang={lang} initialSectionId={HOME_SECTIONS.demo} />}
+            />
+            <Route
+              path={ROUTES.caseStudies}
+              element={<HomePage lang={lang} initialSectionId={HOME_SECTIONS.caseStudies} />}
+            />
+            <Route
+              path={ROUTES.contact}
+              element={<HomePage lang={lang} initialSectionId={HOME_SECTIONS.contact} />}
+            />
+            <Route path={ROUTES.contactPl} element={<Navigate to={ROUTES.contact} replace />} />
+            <Route path={ROUTES.contactTypo} element={<Navigate to={ROUTES.contact} replace />} />
+            <Route path={ROUTES.education} element={<Education lang={lang} />} />
+            <Route
+              path={ROUTES.login}
+              element={
+                isAuthenticated ? (
+                  <Navigate to={ROUTES.dashboard} replace />
+                ) : (
+                  <Login lang={lang} onLogin={handleLogin} />
+                )
+              }
+            />
+            <Route path={ROUTES.reset} element={<ResetPassword lang={lang} onSuccess={() => navigate(ROUTES.login, { replace: true })} />} />
+            <Route
+              path={ROUTES.dashboard}
+              element={
+                isAuthenticated && user ? (
+                  <Dashboard lang={lang} onLogout={handleLogout} userData={user} />
+                ) : (
+                  <Navigate to={ROUTES.login} replace />
+                )
+              }
+            />
+            <Route path={ROUTES.notFound} element={<NotFoundPage lang={lang} />} />
+            <Route path="*" element={<NotFoundPage lang={lang} />} />
+          </Routes>
+        </Suspense>
       </main>
 
-      {view !== 'dashboard' && view !== 'login' && view !== 'reset' && (
+      {!hideFooter && (
         <Suspense fallback={null}>
           <Footer lang={lang} />
           <Chatbot lang={lang} />

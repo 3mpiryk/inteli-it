@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Language } from '../types';
 import { EDUCATION_MODULES, GLOSSARY } from '../constants';
 import { ArrowRight, Lightbulb, AlertTriangle, BookOpen, Play, Check, Globe, Cpu, Database, MessageSquare, Server } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ROUTES } from '../routes';
 
-// DODANO: onNavigateToContact do interfejsu
 interface EducationProps {
   lang: Language;
-  onNavigateToContact: () => void;
 }
 
 const ThoughtBubble = ({ text, isVisible }: { text: string | null; isVisible: boolean }) => {
@@ -237,8 +237,7 @@ const AutomationSimulator = ({ lang }: { lang: Language }) => {
   );
 };
 
-// DODANO: destrukturyzację propsa onNavigateToContact
-const Education: React.FC<EducationProps> = ({ lang, onNavigateToContact }) => {
+const Education: React.FC<EducationProps> = ({ lang }) => {
   return (
     <div className="bg-slate-950 min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-6">
@@ -380,16 +379,13 @@ const Education: React.FC<EducationProps> = ({ lang, onNavigateToContact }) => {
                 : 'Knowledge is the first step. Action is the second. You don\'t have to do it alone.'}
             </p>
             
-            {/* 
-              POWRÓT DO BUTTONA I UŻYCIE PROPSA onNavigateToContact
-            */}
-            <button
-              onClick={onNavigateToContact}
+            <Link
+              to={ROUTES.contact}
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:bg-blue-50 transition-colors cursor-pointer relative z-50"
             >
               {lang === 'pl' ? 'Umów darmową analizę' : 'Book Free Analysis'}
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
         </div>
 

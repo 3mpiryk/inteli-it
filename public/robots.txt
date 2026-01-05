@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /dashboard
+Disallow: /reset
+Disallow: /404
 
 Sitemap: https://inteli-it.com/sitemap.xml

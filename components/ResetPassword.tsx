@@ -56,8 +56,6 @@ const ResetPassword: React.FC<ResetProps> = ({ lang, onSuccess }) => {
       setSuccess(true);
       // Po 2 sekundach przekieruj do logowania
       setTimeout(() => {
-        // Czyścimy URL z parametrów
-        window.history.replaceState({}, document.title, "/");
         onSuccess();
       }, 2500);
 

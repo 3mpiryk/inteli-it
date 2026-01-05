@@ -1,5 +1,6 @@
 
 import { BilingualText, NavItem, Feature, Stat, ProcessStep, CaseStudy, Testimonial, FAQItem, WhyUsItem, EducationModule, GlossaryTerm, ClientService, Invoice, Contract, User } from './types';
+import { ROUTES } from './routes';
 import { 
   BarChart3, 
   Receipt, 
@@ -16,11 +17,11 @@ import {
 } from 'lucide-react';
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: { pl: 'Oferta', en: 'Services' }, href: '#services' },
-  { label: { pl: 'Proces', en: 'Process' }, href: '#process' },
-  { label: { pl: 'Edukacja', en: 'Education' }, href: 'education', isPage: true },
-  { label: { pl: 'Case Studies', en: 'Case Studies' }, href: '#cases' },
-  { label: { pl: 'Kontakt', en: 'Contact' }, href: '#contact' },
+  { label: { pl: 'Oferta', en: 'Services' }, href: ROUTES.services },
+  { label: { pl: 'Proces', en: 'Process' }, href: ROUTES.process },
+  { label: { pl: 'Edukacja', en: 'Education' }, href: ROUTES.education },
+  { label: { pl: 'Case Studies', en: 'Case Studies' }, href: ROUTES.caseStudies },
+  { label: { pl: 'Kontakt', en: 'Contact' }, href: ROUTES.contact },
 ];
 
 export const HERO_STATS: Stat[] = [
