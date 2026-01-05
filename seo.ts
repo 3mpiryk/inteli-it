@@ -124,18 +124,6 @@ const SEO_ENTRIES: Record<string, SeoEntry> = {
     canonicalPath: ROUTES.dashboard,
     noindex: true,
   },
-  [ROUTES.notFound]: {
-    title: {
-      pl: '404 | Inteli-IT',
-      en: '404 | Inteli-IT',
-    },
-    description: {
-      pl: 'Nie znaleziono strony.',
-      en: 'Page not found.',
-    },
-    canonicalPath: ROUTES.notFound,
-    noindex: true,
-  },
 };
 
 const resolveSeoKey = (pathname: string) => {
@@ -149,8 +137,7 @@ const resolveSeoKey = (pathname: string) => {
   if (pathname.startsWith(ROUTES.login)) return ROUTES.login;
   if (pathname.startsWith(ROUTES.reset)) return ROUTES.reset;
   if (pathname.startsWith(ROUTES.dashboard)) return ROUTES.dashboard;
-  if (pathname === ROUTES.notFound) return ROUTES.notFound;
-  return ROUTES.notFound;
+  return ROUTES.home;
 };
 
 const setMetaTag = (attribute: 'name' | 'property', value: string, content: string) => {

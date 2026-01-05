@@ -11,7 +11,6 @@ const Education = React.lazy(() => import('./components/Education'));
 const Login = React.lazy(() => import('./components/Login'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
 const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
-const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
 const Footer = React.lazy(() => import('./components/Footer'));
 const Chatbot = React.lazy(() => import('./components/Chatbot'));
 
@@ -104,8 +103,6 @@ function App() {
               path={ROUTES.contact}
               element={<HomePage lang={lang} initialSectionId={HOME_SECTIONS.contact} />}
             />
-            <Route path={ROUTES.contactPl} element={<Navigate to={ROUTES.contact} replace />} />
-            <Route path={ROUTES.contactTypo} element={<Navigate to={ROUTES.contact} replace />} />
             <Route path={ROUTES.education} element={<Education lang={lang} />} />
             <Route
               path={ROUTES.login}
@@ -128,8 +125,7 @@ function App() {
                 )
               }
             />
-            <Route path={ROUTES.notFound} element={<NotFoundPage lang={lang} />} />
-            <Route path="*" element={<NotFoundPage lang={lang} />} />
+            <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
           </Routes>
         </Suspense>
       </main>

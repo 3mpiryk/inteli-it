@@ -9,9 +9,6 @@ export const ROUTES = {
   login: '/login',
   dashboard: '/dashboard',
   reset: '/reset',
-  notFound: '/404',
-  contactPl: '/kontakt',
-  contactTypo: '/contakt',
 } as const;
 
 export const HOME_SECTIONS = {
